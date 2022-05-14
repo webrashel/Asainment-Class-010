@@ -43,9 +43,79 @@
 
 
 </head>
+<!-- "<div class=\"alert alert-{$alarttype} alert-dismissible fade show\" role=\"alert\">{$message}
+        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
+    </div>" -->
 
 
 <body>
+    <?php
+    function validate($message , $alarttype="" ){
+       return "<div class=\"alert alert-{$alarttype} alert-dismissible fade show\" role=\"alert\">
+       {$message}
+     <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>
+   </div>" ; 
+
+    }
+
+    function valid_email($email){
+        if (filter_var($email , FILTER_VALIDATE_EMAIL)) {
+            return true;
+           
+        } else {
+            return false;
+          
+        }
+        
+
+    }
+    function filter_mail($email){
+        $validmail= ['brac.edu.bd','nsu.edu.bd', 'diu.edu.bd' ];
+        $emails_arry=explode('@',$email, 2);
+        if (in_array($emails_arry[1] , $validmail)) {
+            return true ;
+        } else{
+            return false ;
+        }
+
+    }
+
+    if(isset($_POST['btnregister'])){
+        $username = $_POST["username"];
+        $email = $_POST["email"];
+        $phone = $_POST["phone"];
+        $password = $_POST["password"];
+
+
+       
+
+
+
+    
+    if (empty($username) || empty($email) || empty($phone) || empty($password)) {
+    
+        $v_message =validate('all feild is Requird' , 'danger') ;
+        
+    }else if(filter_var($email , FILTER_VALIDATE_EMAIL) == FALSE ){
+        $v_message =validate('Email is not valid' ,'warning') ;
+
+    } else if(filter_mail($email)==false){
+        $v_message =validate('Email is not edu mail' ,'warning') ;
+    }
+    
+    else {
+        $v_message = validate('Every Thing is Ok' , 'success');
+        
+    }
+
+    }
+
+
+
+    
+    
+    
+    ?>
 
     <div class="all-content">
         <div class="containers">
@@ -54,23 +124,17 @@
                     <div class="card-body">
                         <H2>RAGISTRATION FROM</H2>
                         <?php
-                        if (isset($v_message)) {
+                        if(isset($v_message)){
                             echo $v_message ;
-                        } 
+                        }
+                         ?>
                         
                         
-                        ?>
-
-                        <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                       
-
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div> -->
-                        <form method="Post" action="from10.php">
+                        <form method="POST" action="">
 
                             <div class="mb-6">
                                 <label for="exampleInputname" class="form-label">Your Name</label>
-                                <input type="text" name="username" class="form-control" id="exampleInputname">
+                                <input type="text" name="username" class="form-control" id="exampleInputname ">
                             </div>
                             <div class="mb-6">
                                 <label for="exampleInputphone" class="form-label">Your Phone</label>
@@ -79,7 +143,7 @@
 
                             <div class="mb-6">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" name="email" class="form-control" id="exampleInputEmail1">
+                                <input type="text" name="email" class="form-control" id="exampleInputEmail1">
 
                             </div>
 
@@ -88,7 +152,7 @@
                                 <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                             </div>
                             <div class="button">
-                                <button type="submit" name="btnregister" class="btn btn-primary brt">Submit</button>
+                                <button type="submit" name="btnregister" class="btn btn-primary brt ">Submit</button>
                             </div>
 
 
